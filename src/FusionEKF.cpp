@@ -78,8 +78,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
       
       float px = measurement_pack.raw_measurements_[0];
-      float py = measurement_pack.raw_measurements_[1];
-      
+      float py = measurement_pack.raw_measurements_[1];      
       float vx = 0.0;
       float vy = 0.0;
       
