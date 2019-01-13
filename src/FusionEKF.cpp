@@ -37,7 +37,7 @@ FusionEKF::FusionEKF() {
    * Set the process and measurement noises
    */
   H_laser_ << 1, 0, 0, 0, 
-              0, 1, 0, 0; 
+              0, 1, 0, 0;
 
 }
 
@@ -66,12 +66,12 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
       
       float rho = measurement_pack.raw_measurements_[0];
       float phi = measurement_pack.raw_measurements_[1];
-      float rhodot = measurement_pack.raw_measurements_[2];
+      float rho_dot = measurement_pack.raw_measurements_[2];
       
       float px = rho * cos(phi);
       float py = rho * sin(phi);
-      float vx = rhodot * cos(phi);
-      float vy = rhodot * sin(phi);
+      float vx = rho_dot * cos(phi);
+      float vy = rho_dot * sin(phi);
       
       ekf_.x_ << px, py, vx , vy;
     }
@@ -84,6 +84,8 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
       
       ekf_.x_ << px, py, vx , vy;
     }
+    
+    previous_timestamp_ = measurement_pack.timestamp_;
 
     // done initializing, no need to predict or update
     is_initialized_ = true;
