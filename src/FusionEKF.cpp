@@ -39,6 +39,11 @@ FusionEKF::FusionEKF() {
   H_laser_ << 1, 0, 0, 0, 
               0, 1, 0, 0;
 
+  ekf_.P_ = MatrixXd(4, 4);
+  ekf_.P_ << 1, 0, 0, 0,
+            0, 1, 0, 0,
+            0, 0, 1000, 0,
+            0, 0, 0, 1000;
 }
 
 /**
@@ -107,6 +112,12 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   // dt - expressed in seconds
   float dt = (measurement_pack.timestamp_ - previous_timestamp_) / 1000000.0;
   previous_timestamp_ = measurement_pack.timestamp_;  
+  
+  ekf_.F_ = MatrixXd(4, 4);
+  ekf_.F_ << 1, 0, dt, 0,
+             0, 1, 0, dt,
+             0, 0, 1, 0,
+             0, 0, 0, 1;
 
   float dt_2 = dt * dt;
   float dt_3 = dt_2 * dt;
